@@ -1,6 +1,6 @@
 package com.thoughtworks.capacity.gtb.mvc;
 
-import com.thoughtworks.capacity.gtb.mvc.exception.RegisterException;
+import com.thoughtworks.capacity.gtb.mvc.exception.RequestError;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,9 +11,9 @@ import javax.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(RegisterException.class)
+    @ExceptionHandler(RequestError.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ErrorResult handle(RegisterException exception) {
+    ErrorResult handle(RequestError exception) {
         return new ErrorResult(400, exception.getMessage());
     }
 

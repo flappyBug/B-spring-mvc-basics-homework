@@ -1,7 +1,7 @@
 package com.thoughtworks.capacity.gtb.mvc.service;
 
 import com.thoughtworks.capacity.gtb.mvc.domain.User;
-import com.thoughtworks.capacity.gtb.mvc.exception.RegisterException;
+import com.thoughtworks.capacity.gtb.mvc.exception.RequestError;
 import com.thoughtworks.capacity.gtb.mvc.util.ErrorMessage;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +14,15 @@ public class UserService {
 
     public void register(User user) {
         if (userList.stream().anyMatch(registeredUser -> registeredUser.getUsername().equals(user.getUsername()))) {
-            throw new RegisterException(ErrorMessage.USER_EXISTS);
+            throw new RequestError(ErrorMessage.USER_EXISTS);
         }
         user.setId(userList.size());
         userList.add(user);
+    }
+
+    public User login(String username, String password) {
+        return userList.stream().filter(user -> user.getUsername().equals(username) && user.getPassword().equals(password))
+                .findAny()
+                .orElseThrow(() -> new RequestError(ErrorMessage.USERNAME_AND_PASSWORD_NOT_MATCH));
     }
 }
